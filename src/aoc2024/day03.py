@@ -1,8 +1,5 @@
 import re
 
-
-
-
 def part1(input):
     """Find all instances of mul(X,Y), where X and Y are 1-3 digit integers. No other characters are allowed.
     Return the sum of the products of X and Y.
