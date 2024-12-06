@@ -37,4 +37,4 @@ def test_day05_part1(sample_input):
     assert day05.part1(sample_input) == 143
 
 def test_day05_part2(sample_input):
-    assert day05.part2(sample_input) == 0
+    assert day05.part2(sample_input) == 123

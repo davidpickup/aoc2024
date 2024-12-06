@@ -1,35 +1,55 @@
-from collections import defaultdict
+from functools import cmp_to_key
 
-def part1(input):
+
+def _process_input(input) -> tuple[dict, dict]:
     lines = input.splitlines()
-    dependencies = defaultdict(list)
+    dependencies = {}
     updates = []
 
     for line in lines:
         if "|" in line:
             x, y = map(int, line.split("|"))
-            dependencies[y].append(x)
+            if y not in dependencies:
+                dependencies[y] = []
+            if x not in dependencies:
+                dependencies[x] = []
+            dependencies[x].append(y)
         elif "," in line:
             updates.append(list(map(int, line.split(","))))
 
-    def is_valid_update(update):
-        position = {page: idx for idx, page in enumerate(update)}
-        for y, deps in dependencies.items():
-            if y in position:
-                for x in deps:
-                    if x in position and position[x] > position[y]:
-                        return False
-        return True
+    return dependencies, updates
 
-    result = 0
-    for update in updates:
-        if is_valid_update(update):
-            result += update[len(update) // 2]
 
-    return result
+def part1(input):
+    """Output the middle element of the list of updates that are sorted."""
+    dependencies, updates = _process_input(input)
+
+    def _is_sorted(update):
+        return all(j in dependencies[i] for i, j in zip(update, update[1:]))
+
+    return sum(update[len(update) // 2] for update in updates if _is_sorted(update))
+
 
 def part2(input):
-    return 0
+    """Output the middle element of the sorted list of updates that are not sorted."""
+    dependencies, updates = _process_input(input)
+
+    def _is_sorted(update):
+        return all(j in dependencies[i] for i, j in zip(update, update[1:]))
+
+    return sum(
+        sorted(
+            update,
+            key=cmp_to_key(
+                lambda x, y: (
+                    -1 if y in dependencies[x] else 1 if x in dependencies[y] else 0
+                )
+            ),
+        )[len(update) // 2]
+        for update in updates
+        if not _is_sorted(update)
+    )
+
 
 if __name__ == "__main__":
     with open("input.txt") as f:
