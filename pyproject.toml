@@ -7,7 +7,9 @@ authors = [
     { name = "David Pickup" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "tqdm>=4.67.1",
+]
 
 [project.scripts]
 aoc2024 = "aoc2024:main"
