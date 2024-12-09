@@ -17,5 +17,5 @@ def sample_input():
 def test_day07_part1(sample_input):
     assert day07.part1(sample_input) == 3749
 
-def test_day05_part2(sample_input):
+def test_day07_part2(sample_input):
     assert day07.part2(sample_input) == 11387
